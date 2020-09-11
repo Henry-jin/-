@@ -4,8 +4,24 @@ export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
-  layout: {},
+  // layout: {},
   routes: [
-    { path: '/', component: '@/pages/index' },
+    {
+      path: '/',
+      component: '@/layouts/index',
+      routes: [
+        { path: '/', redirect: '/index' },
+        { path: '/index', component: 'index' },
+        {
+          path: '/user', component: 'user',
+          wrappers: [
+            '@/wrappers/auth',
+          ],
+        },
+        { component: '@/pages/404' }
+      ]
+    },
+    { component: '@/pages/404' }
+    // { path: '/', component: '@/pages/index' },
   ],
 });
