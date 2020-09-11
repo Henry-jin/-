@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './index.less';
 import { Card, Divider, Table, Drawer, Input, List, Button, Form, Popconfirm, message } from 'antd';
 import { connect } from 'dva';
-
+import LookOver from '@/pages/look_over';
 class Page extends React.Component {
   columns = [
     {
@@ -15,6 +15,8 @@ class Page extends React.Component {
       render: (text: any, record: any) => {
         return <>
           <a onClick={this.handleEdit.bind(this, record)}>编辑</a>
+          <Divider type='vertical' />
+          <a onClick={this.handleSee.bind(this, record)}>查看</a>
           <Divider type='vertical' />
           <Popconfirm
             title='确认删除吗?'
@@ -37,7 +39,8 @@ class Page extends React.Component {
       current: 1,
     },
     visible: false,
-    item:null
+    item: null,
+    seeVisivle: false
   }
   id = 3;
 
@@ -45,6 +48,17 @@ class Page extends React.Component {
     this.props.dispatch({
       type: 'commission/delete',
       payload: { id: item.id }
+    })
+  }
+  handleSee = (item: any) => {
+    this.setState({
+      item,
+      seeVisivle: true
+    })
+  }
+  handleHideSee = () => {
+    this.setState({
+      seeVisivle: false
     })
   }
   handleEdit = (item: any) => {
@@ -71,9 +85,9 @@ class Page extends React.Component {
   onFinish = (val: any) => {
     let type = 'commission/add'
     const params = { commission: val.commission, id: this.id++ }
-    if(this.state.item){
+    if (this.state.item) {
       type = 'commission/edit';
-      params.id = this.state.item.id 
+      params.id = this.state.item.id
     }
     this.props.dispatch({
       type: type,
@@ -104,7 +118,8 @@ class Page extends React.Component {
             onChange={this.handleTableChange}
             pagination={this.state.pagination}
           ></Table>
-          <Drawer
+        </Card>
+        <Drawer
             visible={this.state.visible}
             onClose={this.onClose}
             title="配置"
@@ -119,7 +134,7 @@ class Page extends React.Component {
                 label="代办"
                 name="commission"
                 rules={[{ required: true, message: 'Please input your commission!' }]}
-                initialValue={this.state.item? this.state.item.commission:''}
+                initialValue={this.state.item ? this.state.item.commission : ''}
               >
                 <Input placeholder="请输入代办" />
               </Form.Item>
@@ -129,7 +144,7 @@ class Page extends React.Component {
               </div>
             </Form>
           </Drawer>
-        </Card>
+          <LookOver item={this.state.item} visible={this.state.seeVisivle} onClose={this.handleHideSee}/>
       </div >
     )
   }
