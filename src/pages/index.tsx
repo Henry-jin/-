@@ -156,22 +156,3 @@ export default connect(({ commission, loading }) => ({
 )(Page);
 
 
-// const Products = ({ dispatch, products }:any) => {
-//   function handleDelete(id:any) {
-//     dispatch({
-//       type: 'products/delete',
-//       payload: id,
-//     });
-//   }
-//   return (
-//     <div>
-//       <h2>List of Products</h2>
-//       {/* <ProductList onDelete={handleDelete} products={products} /> */}
-//     </div>
-//   );
-// };
-
-// // export default Products;
-// export default connect(({ products }) => ({
-//   products,
-// }))(Products);
